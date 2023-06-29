@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'debug'
 require_relative './position'
 
 WHITE_STONE = 1
@@ -71,7 +70,6 @@ def turn!(board, target_pos, attack_stone_color, direction)
   return false if target_pos.out_of_board?
   return false if [BLANK_CELL, attack_stone_color].include?(target_pos.stone_color(board))
 
-
   next_pos = target_pos.next_position(direction)
   if (next_pos.stone_color(board) == attack_stone_color) || turn!(board, next_pos, attack_stone_color, direction)
     board[target_pos.col][target_pos.row] = attack_stone_color
@@ -90,10 +88,11 @@ def placeable?(board, attack_stone_color)
     cols.each.with_index do |cell, row|
       next unless cell == BLANK_CELL # 空セルでなければ判定skip
 
-      position = Position.new(row:, col:)
+      position = Position.new(row: row, col: col)
       return true if put_stone!(board, position.to_cellstr, attack_stone_color, false)
     end
   end
+  false
 end
 
 def count_stone(board, stone_color)
